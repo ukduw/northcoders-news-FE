@@ -38,4 +38,10 @@ function deleteCommentById(comment_id) {
     })
 }
 
-export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes, postCommentbyArticleId, deleteCommentById }
+function getTopics() {
+    return api.get(`/topics`).then(({data}) => {
+        return data
+    })
+}
+
+export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes, postCommentbyArticleId, deleteCommentById, getTopics }
