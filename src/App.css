@@ -39,3 +39,15 @@
   width: 500px;
   height: 150px;
 }
+
+#delete-button {
+  background-color: red;
+}
+
+.deleted-comment {
+  background-color: gray;
+  opacity: 0.5;
+  color: rgb(92, 79, 79);
+  text-decoration: line-through;
+  pointer-events: none;
+}
