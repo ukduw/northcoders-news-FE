@@ -14,6 +14,11 @@ function getArticleById(article_id) {
     })
 }
 
+function getCommentsByArticleId(article_id) {
+    return api.get(`/articles/${article_id}/comments`).then(({data}) => {
+        return data
+    })
+}
 
 
-export { getAllArticles, getArticleById }
+export { getAllArticles, getArticleById, getCommentsByArticleId }
