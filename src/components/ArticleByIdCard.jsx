@@ -1,5 +1,6 @@
-import { useState } from "react"
-import { updateArticleVotes } from "../../api"
+import { useState, useContext } from "react"
+import { updateArticleVotes, postCommentbyArticleId } from "../../api"
+import {UserContext} from "../contexts/User"
 
 function ArticleByIdCard({article, comments}) {
     const {article_id, title, topic, author, created_at, article_img_url, body, votes, comment_count} = article.article
@@ -23,8 +24,28 @@ function ArticleByIdCard({article, comments}) {
     }
 
 
+    const [commentPost, setCommentPost] = useState("")
+    const [optimisticCommentPost, setOptimisticCommentPost] = useState("")
+    const {loggedInUser, setLoggedInUser} = useContext(UserContext)
+
+    function handleInputChange(event) {
+        setCommentPost(event.target.value)
+        console.log(commentPost)
+    }
+
+    function handleSubmit(event) {
+        postCommentbyArticleId(article_id, loggedInUser, commentPost).catch(() => {
+            setOptimisticCommentPost("")
+            alert("Error, try posting a comment again later")
+        })
+        setOptimisticCommentPost(commentPost)
+        setCommentPost("")
+    }
+
+
     return (
         <div className="articles-grid">
+            {/* ARTICLE */}
             <div key={article_id} className="article-card">
                     <div className="article-details">
                         <h2>{title}</h2>
@@ -40,6 +61,26 @@ function ArticleByIdCard({article, comments}) {
                     </div>
                     <div className="comments-section">
                         <h3>Comments</h3>
+                        {/* COMMENT FORM */}
+                        <form action={handleSubmit}>
+                            <label htmlFor="comment-box"></label>
+                            <input type="textarea" id="comment-box" name="comment-box" placeholder="Add a comment..."
+                                value={commentPost}
+                                onChange={handleInputChange}
+                                required
+                            />
+                            <button type="submit">Comment</button>
+                        </form>
+                        {/* OPTIMISTIC COMMENT */}
+                        {optimisticCommentPost.length !== 0 ? 
+                            <div className="optimistic-comment">
+                                <p>{loggedInUser}</p>
+                                <p>{optimisticCommentPost}</p>
+                                <p>Votes: 0</p>
+                            </div> : 
+                            <></>
+                        }
+                        {/* ALL COMMENTS */}
                         {commentsArr.map((comment) => {
                             return <div key={comment.comment_id}>
                                 <p>{comment.author}</p>
