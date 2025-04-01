@@ -20,5 +20,11 @@ function getCommentsByArticleId(article_id) {
     })
 }
 
+function updateArticleVotes(article_id, vote) {
+    return api.patch(`/articles/${article_id}`, {inc_votes: vote}).then(({data}) => {
+        return data
+    })
+}
 
-export { getAllArticles, getArticleById, getCommentsByArticleId }
+
+export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes }
