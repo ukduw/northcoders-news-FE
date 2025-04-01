@@ -26,5 +26,10 @@ function updateArticleVotes(article_id, vote) {
     })
 }
 
+function postCommentbyArticleId(article_id, user, comment) {
+    return api.post(`/articles/${article_id}/comments`, {author: user, body: comment}).then(({data}) => {
+        return data
+    })
+}
 
-export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes }
+export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes, postCommentbyArticleId }
