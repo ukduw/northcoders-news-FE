@@ -6,8 +6,8 @@ function ArticleCard({articles}) {
     return (
         <div className="articles-grid">
             {articleArr.map((article) => {
-                return <Link to={`/article/${article.article_id}`}>
-                <div key={article.article_id} className="article-card">
+                return <Link to={`/article/${article.article_id}`} key={article.article_id}>
+                <div className="article-card">
                     <img src={article.article_img_url} alt={article.title} className="article-img"></img>
                     <div className="article-details">
                         <h2>{article.title}</h2>

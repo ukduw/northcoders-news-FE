@@ -10,13 +10,16 @@ function ArticleById() {
     const {article_id} = useParams()
     
     useEffect(() => {
-        getArticleById(article_id).then((article) => {
-            setArticle(article)
-            setLoading(false)
-        })
-        getCommentsByArticleId(article_id).then((comments) => {
-            setComments(comments)
-        })
+        function fetchArticleComments() {
+            Promise.all([getArticleById(article_id), getCommentsByArticleId(article_id)])
+            .then(([article, comments]) => {
+                setArticle(article)
+                setComments(comments)
+                setLoading(false)
+            })
+        }
+        
+        fetchArticleComments()
     }, [article_id])
 
     return (
