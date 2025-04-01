@@ -7,20 +7,17 @@ function AllArticles() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setLoading(true)
-        if(allArticles) {
             getAllArticles().then((articles) => {
                 setAllArticles(articles)
                 setLoading(false)
             })
-        }
     }, [])
 
 
     return (
         <section>
             {loading ? <p className="loading-message">Articles Loading...</p> : 
-            <ArticleCard articles={allArticles} />
+                <ArticleCard articles={allArticles} />
             }
         </section>
     )

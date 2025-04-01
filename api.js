@@ -8,8 +8,12 @@ function getAllArticles() {
     })
 }
 
+function getArticleById(article_id) {
+    return api.get(`/articles/${article_id}`).then(({data}) => {
+        return data
+    })
+}
 
 
 
-
-export { getAllArticles }
+export { getAllArticles, getArticleById }
