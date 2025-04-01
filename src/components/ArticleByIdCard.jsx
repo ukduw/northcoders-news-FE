@@ -1,5 +1,5 @@
 import { useState, useContext } from "react"
-import { updateArticleVotes, postCommentbyArticleId } from "../../api"
+import { updateArticleVotes, postCommentbyArticleId, deleteCommentById } from "../../api"
 import {UserContext} from "../contexts/User"
 
 function ArticleByIdCard({article, comments}) {
@@ -43,6 +43,14 @@ function ArticleByIdCard({article, comments}) {
     }
 
 
+    const [deleteClickedId, setDeleteClickedId] = useState([])
+
+    function handleDelete(comment_id) {
+        deleteCommentById(comment_id)
+        setDeleteClickedId((previousIds) => [...previousIds, comment_id])
+    }
+
+
     return (
         <div className="articles-grid">
             {/* ARTICLE */}
@@ -82,11 +90,14 @@ function ArticleByIdCard({article, comments}) {
                         }
                         {/* ALL COMMENTS */}
                         {commentsArr.map((comment) => {
-                            return <div key={comment.comment_id}>
-                                <p>{comment.author}</p>
-                                <p>{comment.created_at}</p>
-                                <p>{comment.body}</p>
-                                <p>Votes: {comment.votes}</p>
+                            return <div key={comment.comment_id} className={deleteClickedId.includes(comment.comment_id) ? "deleted-comment" : ""}>
+                                <div className="comment-details">
+                                    <p>{comment.author}</p>
+                                    <p>{comment.created_at}</p>
+                                    <p>{comment.body}</p>
+                                    <p>Votes: {comment.votes}</p>
+                                </div>
+                                {comment.author === loggedInUser ? <button id="delete-button" onClick={() => handleDelete(comment.comment_id)}>Delete</button> : <></>}
                             </div>
                         })}
                     </div>

@@ -32,4 +32,10 @@ function postCommentbyArticleId(article_id, user, comment) {
     })
 }
 
-export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes, postCommentbyArticleId }
+function deleteCommentById(comment_id) {
+    return api.delete(`/comments/${comment_id}`).then(({data}) => {
+        return data
+    })
+}
+
+export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes, postCommentbyArticleId, deleteCommentById }
