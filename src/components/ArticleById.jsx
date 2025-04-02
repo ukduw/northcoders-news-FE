@@ -2,11 +2,13 @@ import { getArticleById, getCommentsByArticleId } from "../../api"
 import ArticleByIdCard from "./ArticleByIdCard"
 import {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
+import NotFound from "./NotFound"
 
 function ArticleById() {
     const [article, setArticle] = useState('')
     const [comments, setComments] = useState([])
     const [loading, setLoading] = useState(true)
+    const [isError, setIsError] = useState(false)
     const {article_id} = useParams()
     
     useEffect(() => {
@@ -15,6 +17,11 @@ function ArticleById() {
             .then(([article, comments]) => {
                 setArticle(article)
                 setComments(comments)
+            })
+            .catch((error) => {
+                setIsError(true)
+            })
+            .finally(() => {
                 setLoading(false)
             })
         }
@@ -22,7 +29,9 @@ function ArticleById() {
         fetchArticleComments()
     }, [article_id])
 
-    return (
+    if(isError) {
+        return <NotFound />
+    } else return (
         <div>
             {loading ? <p className="loading-message">Article Loading...</p> : 
                 <ArticleByIdCard article={article} comments={comments} />
