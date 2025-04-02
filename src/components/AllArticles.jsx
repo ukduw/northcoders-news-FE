@@ -12,17 +12,35 @@ function AllArticles() {
 
     const [searchParams, setSearchParams] = useSearchParams()
     const topicQuery = searchParams.get("topic")
+    const sortByQuery = searchParams.get("sort_by")
 
     useEffect(() => {
         function fetchArticlesAndTopics() {
-            if(topicQuery) {
+            if(topicQuery && !sortByQuery) {
                 Promise.all([getAllArticles(topicQuery), getTopics()])
                 .then(([articles, topics]) => {
                     setAllArticles(articles)
                     setAllTopics(topics)
                     setLoading(false)
                 })
-            } else {
+            }
+            if(!topicQuery && sortByQuery) {
+                Promise.all([getAllArticles(undefined, sortByQuery), getTopics()])
+                .then(([articles, topics]) => {
+                    setAllArticles(articles)
+                    setAllTopics(topics)
+                    setLoading(false)
+                })
+            }
+            if(topicQuery && sortByQuery) {
+                Promise.all([getAllArticles(topicQuery, sortByQuery), getTopics()])
+                .then(([articles, topics]) => {
+                    setAllArticles(articles)
+                    setAllTopics(topics)
+                    setLoading(false)
+                })
+            }
+            if(!topicQuery && !sortByQuery) {
                 Promise.all([getAllArticles(), getTopics()])
                 .then(([articles, topics]) => {
                     setAllArticles(articles)
@@ -34,14 +52,14 @@ function AllArticles() {
         }
         
         fetchArticlesAndTopics()
-    }, [topicQuery])
+    }, [topicQuery, sortByQuery])
 
 
     return (
         <section>
             {loading ? <p className="loading-message">Articles Loading...</p> : 
                 <div>
-                <TopicFilter topics={allTopics} setSearch={setSearchParams}/>
+                <TopicFilter topics={allTopics} queries={[topicQuery, sortByQuery]}/>
                 <ArticleCard articles={allArticles} />
                 </div>
             }

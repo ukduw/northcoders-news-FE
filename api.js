@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const api = axios.create({baseURL: 'https://backend-nc-news-gozg.onrender.com/api'})
 
-function getAllArticles(topicQuery) {
-    return api.get('/articles', {params: {topic: topicQuery}}).then(({data}) => {
+function getAllArticles(topicQuery, sortByQuery) {
+    return api.get('/articles', {params: {topic: topicQuery, sort_by: sortByQuery}}).then(({data}) => {
         return data
     })
 }
