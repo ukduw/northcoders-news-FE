@@ -13,10 +13,11 @@ function AllArticles() {
     const [searchParams, setSearchParams] = useSearchParams()
     const topicQuery = searchParams.get("topic")
     const sortByQuery = searchParams.get("sort_by")
+    const orderQuery = searchParams.get("order")
 
     useEffect(() => {
         function fetchArticlesAndTopics() {
-            if(topicQuery && !sortByQuery) {
+            if(topicQuery && !sortByQuery && !orderQuery) {
                 Promise.all([getAllArticles(topicQuery), getTopics()])
                 .then(([articles, topics]) => {
                     setAllArticles(articles)
@@ -24,7 +25,15 @@ function AllArticles() {
                     setLoading(false)
                 })
             }
-            if(!topicQuery && sortByQuery) {
+            if(topicQuery && !sortByQuery && orderQuery) {
+                Promise.all([getAllArticles(topicQuery, undefined, orderQuery), getTopics()])
+                .then(([articles, topics]) => {
+                    setAllArticles(articles)
+                    setAllTopics(topics)
+                    setLoading(false)
+                })
+            }
+            if(!topicQuery && sortByQuery && !orderQuery) {
                 Promise.all([getAllArticles(undefined, sortByQuery), getTopics()])
                 .then(([articles, topics]) => {
                     setAllArticles(articles)
@@ -32,8 +41,24 @@ function AllArticles() {
                     setLoading(false)
                 })
             }
-            if(topicQuery && sortByQuery) {
+            if(!topicQuery && sortByQuery && orderQuery) {
+                Promise.all([getAllArticles(undefined, sortByQuery, orderQuery), getTopics()])
+                .then(([articles, topics]) => {
+                    setAllArticles(articles)
+                    setAllTopics(topics)
+                    setLoading(false)
+                })
+            }
+            if(topicQuery && sortByQuery && !orderQuery) {
                 Promise.all([getAllArticles(topicQuery, sortByQuery), getTopics()])
+                .then(([articles, topics]) => {
+                    setAllArticles(articles)
+                    setAllTopics(topics)
+                    setLoading(false)
+                })
+            }
+            if(topicQuery && sortByQuery && orderQuery) {
+                Promise.all([getAllArticles(topicQuery, sortByQuery, orderQuery), getTopics()])
                 .then(([articles, topics]) => {
                     setAllArticles(articles)
                     setAllTopics(topics)
@@ -52,7 +77,7 @@ function AllArticles() {
         }
         
         fetchArticlesAndTopics()
-    }, [topicQuery, sortByQuery])
+    }, [topicQuery, sortByQuery, orderQuery])
 
 
     return (
