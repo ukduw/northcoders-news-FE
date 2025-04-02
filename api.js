@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const api = axios.create({baseURL: 'https://backend-nc-news-gozg.onrender.com/api'})
 
-function getAllArticles() {
-    return api.get('/articles').then(({data}) => {
+function getAllArticles(topicQuery) {
+    return api.get('/articles', {params: {topic: topicQuery}}).then(({data}) => {
         return data
     })
 }
@@ -38,4 +38,10 @@ function deleteCommentById(comment_id) {
     })
 }
 
-export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes, postCommentbyArticleId, deleteCommentById }
+function getTopics() {
+    return api.get(`/topics`).then(({data}) => {
+        return data
+    })
+}
+
+export { getAllArticles, getArticleById, getCommentsByArticleId, updateArticleVotes, postCommentbyArticleId, deleteCommentById, getTopics }

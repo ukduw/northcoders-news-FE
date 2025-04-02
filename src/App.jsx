@@ -15,6 +15,7 @@ function App() {
       <NavBar/>
       <Routes>
         <Route path="/" element={<AllArticles />} />
+        <Route path="/articles" element={<AllArticles />} />
         <Route path="/article/:article_id" element={<ArticleById />}/>
       </Routes>
       </UserProvider>
