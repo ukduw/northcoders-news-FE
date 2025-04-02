@@ -9,6 +9,7 @@ function AllArticles() {
     const [allArticles, setAllArticles] = useState([])
     const [allTopics, setAllTopics] = useState([])
     const [loading, setLoading] = useState(true)
+    const [isError, setIsError] = useState("")
 
     const [searchParams, setSearchParams] = useSearchParams()
     const topicQuery = searchParams.get("topic")
@@ -24,6 +25,9 @@ function AllArticles() {
                     setAllTopics(topics)
                     setLoading(false)
                 })
+                .catch((error) => {
+                    setIsError(error.message)
+                })
             }
             if(topicQuery && !sortByQuery && orderQuery) {
                 Promise.all([getAllArticles(topicQuery, undefined, orderQuery), getTopics()])
@@ -31,6 +35,9 @@ function AllArticles() {
                     setAllArticles(articles)
                     setAllTopics(topics)
                     setLoading(false)
+                })
+                .catch((error) => {
+                    setIsError(error.message)
                 })
             }
             if(!topicQuery && sortByQuery && !orderQuery) {
@@ -40,6 +47,9 @@ function AllArticles() {
                     setAllTopics(topics)
                     setLoading(false)
                 })
+                .catch((error) => {
+                    setIsError(error.message)
+                })
             }
             if(!topicQuery && sortByQuery && orderQuery) {
                 Promise.all([getAllArticles(undefined, sortByQuery, orderQuery), getTopics()])
@@ -47,6 +57,9 @@ function AllArticles() {
                     setAllArticles(articles)
                     setAllTopics(topics)
                     setLoading(false)
+                })
+                .catch((error) => {
+                    setIsError(error.message)
                 })
             }
             if(topicQuery && sortByQuery && !orderQuery) {
@@ -56,6 +69,9 @@ function AllArticles() {
                     setAllTopics(topics)
                     setLoading(false)
                 })
+                .catch((error) => {
+                    setIsError(error.message)
+                })
             }
             if(topicQuery && sortByQuery && orderQuery) {
                 Promise.all([getAllArticles(topicQuery, sortByQuery, orderQuery), getTopics()])
@@ -63,6 +79,9 @@ function AllArticles() {
                     setAllArticles(articles)
                     setAllTopics(topics)
                     setLoading(false)
+                })
+                .catch((error) => {
+                    setIsError(error.message)
                 })
             }
             if(!topicQuery && !sortByQuery) {
@@ -72,6 +91,9 @@ function AllArticles() {
                     setAllTopics(topics)
                     setLoading(false)
                 })
+                .catch((error) => {
+                    setIsError(error.message)
+                })
             }
             
         }
@@ -80,7 +102,11 @@ function AllArticles() {
     }, [topicQuery, sortByQuery, orderQuery])
 
 
-    return (
+    if(isError) {
+        return (
+            <h1>{isError}</h1>
+        )
+    } else return (
         <section>
             {loading ? <p className="loading-message">Articles Loading...</p> : 
                 <div>
