@@ -4,7 +4,7 @@ function ArticleCard({articles}) {
     const articleArr = articles.articles
 
     return (
-        <div className="articles-grid">
+        <ul className="articles-grid">
             {articleArr.map((article) => {
                 return <Link to={`/article/${article.article_id}`} key={article.article_id}>
                 <div className="article-card">
@@ -20,7 +20,7 @@ function ArticleCard({articles}) {
                 </div>
                 </Link>
             })}
-        </div>
+        </ul>
     )
 }
 
